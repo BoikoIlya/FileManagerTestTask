@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                 return;
             }else{
                 filesAndFolders.forEach {
-                    Log.d("tag", "onCreate: ${it.name}.${it.extension} ")
+                    Log.d("tag", "onCreate: ${it.name}.${it.hashCode()} ")
                 }
 
             }

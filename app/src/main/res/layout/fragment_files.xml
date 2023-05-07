@@ -5,11 +5,20 @@
     android:layout_height="match_parent"
     tools:context=".files.presentation.FilesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:gravity="center"
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="files" />
+        android:id="@+id/files_rcv"
+        tools:listitem="@layout/file_item"
+        />
+
+    <TextView
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nothing_found"
+        android:layout_gravity="center"
+        style="?textAppearanceHeadline6"
+        />
 
 </FrameLayout>
