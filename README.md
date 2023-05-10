@@ -1,6 +1,6 @@
 # FileManagerTestTask
 
-#Functinal
+# Functinal
 - FILES FRAGMENT
   - can open file by clicking or open folder
   - can share file by long click
