@@ -6,6 +6,7 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.filemanager.R
+import com.example.filemanager.core.DispatcherList
 import com.example.filemanager.core.FileDataCache
 import com.example.filemanager.core.FilesDao
 import com.example.filemanager.core.ManagerResource
@@ -41,7 +42,8 @@ class SaveFilesHashWorker @AssistedInject constructor(
     private val handledFilesCommunication: HandledFilesCommunication,
     private val toFileUiMapper: FileDomain.Mapper<FileUi>,
     private val toFileDomainMapper: Mapper<File, FileDomain>,
-    private val managerResource: ManagerResource
+    private val managerResource: ManagerResource,
+    private val dispatcherList: DispatcherList
 ): CoroutineWorker(context, workerParameters) {
 
 
@@ -79,14 +81,13 @@ class SaveFilesHashWorker @AssistedInject constructor(
         val updateFiles = emptyList<FileDataCache>().toMutableList()
 
         val mismatchedFiles: MutableList<File> = mutableListOf()
-        val dispatcher = Dispatchers.IO
 
         coroutineScope {
             var iterationCounter = 0
             val lock = Any() // Create a lock object for synchronization
 
             allFilesOnDevice.chunked(100).map { chunk ->
-                async(dispatcher) {
+                async(dispatcherList.io()) {
                     chunk.forEach { file ->
                         try {
                             val fileInputStream = FileInputStream(file)
