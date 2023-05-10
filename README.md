@@ -15,7 +15,7 @@ Stack:
 - Kotlin
 - XML
 - Room
-- Hil
+- Hilt
 - Corutines
 - State and shared flow
 - WorkManager
