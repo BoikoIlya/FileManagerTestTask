@@ -1,15 +1,20 @@
 package com.example.filemanager.main.di
 
 import android.content.Context
-import android.os.Environment
-import com.example.filemanager.core.DataTransfer
+import androidx.room.Room
+import com.example.filemanager.core.DataCache
 import com.example.filemanager.core.DispatcherList
+import com.example.filemanager.core.FileDataCache
+import com.example.filemanager.core.FilesDB
+import com.example.filemanager.core.FilesDao
 import com.example.filemanager.core.ManagerResource
 import com.example.filemanager.core.Mapper
+import com.example.filemanager.core.PermissionStateCommunication
 
 import com.example.filemanager.files.data.FileToFileDomainMapper
 import com.example.filemanager.files.data.FilesRepository
-import com.example.filemanager.files.data.cache.FilesCacheDataSource
+import com.example.filemanager.files.data.cache.PagesFilesCache
+import com.example.filemanager.files.data.cache.FilesStorageDataSource
 import com.example.filemanager.files.domain.FileDomain
 import com.example.filemanager.files.domain.FileExtensionHandler
 import com.example.filemanager.files.domain.FileSizeHandler
@@ -17,18 +22,22 @@ import com.example.filemanager.files.domain.FilesInteractor
 import com.example.filemanager.files.presentation.FileUi
 import com.example.filemanager.files.presentation.FilesCommunication
 import com.example.filemanager.files.presentation.FilesStateCommunication
+import com.example.filemanager.lastchangedfiles.presentation.HandledFilesCommunication
+import com.example.filemanager.lastchangedfiles.presentation.HandledFilesStateCommunication
+import com.example.filemanager.main.data.MainRepository
+import com.example.filemanager.main.data.SaveFilesHashWorker
+import com.example.filemanager.main.data.WorkManagerWrapper
 import com.example.filemanager.main.presentation.SingleUiEventCommunication
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
+import dagger.multibindings.IntoMap
 import java.io.File
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import javax.inject.Singleton
 
 /**
@@ -58,6 +67,7 @@ interface MainModule {
     @Binds
     fun bindFileToFileDomainMapper(obj: FileToFileDomainMapper): Mapper<File, FileDomain>
 
+
     @Singleton
     @Binds
     fun bindToFileUiMapper(obj: FileDomain.ToFileUiMapper): FileDomain.Mapper<FileUi>
@@ -66,20 +76,18 @@ interface MainModule {
     @Binds
     fun bindToUiMapper(obj: FileUi.ToUiMapper): FileUi.Mapper<Unit>
 
-
-
     @Singleton
     @Binds
     fun bindDispatcherList(obj: DispatcherList.Base): DispatcherList
 
     @Singleton
     @Binds
-    fun bindFilesCacheDataSource(obj: FilesCacheDataSource.Base): FilesCacheDataSource
+    fun bindFilesCacheDataSource(obj: FilesStorageDataSource.Base): FilesStorageDataSource
 
 
     @Singleton
     @Binds
-    fun bindPathTransfer(obj: DataTransfer.PathTransfer): DataTransfer<String>
+    fun bindPathTransfer(obj: DataCache.PathTransfer): DataCache<String>
 
     @Singleton
     @Binds
@@ -89,20 +97,26 @@ interface MainModule {
     @Singleton
     fun bindManagerResource(managerResource: ManagerResource.Base): ManagerResource
 
-}
-
-
-
-
-@Module
-@InstallIn(ViewModelComponent::class)
-interface mod{
-
-    @ViewModelScoped
     @Binds
-    fun bindFilesCommunication(obj: FilesCommunication.Base): FilesCommunication
+    @Singleton
+    fun bindFilesCache(filesCache: PagesFilesCache.Base): PagesFilesCache
 
-    @ViewModelScoped
     @Binds
-    fun bindFilesStateCommunication(obj: FilesStateCommunication.Base): FilesStateCommunication
+    @Singleton
+    fun bindMainRepository(mainRepository: MainRepository.Base): MainRepository
+
+
+    @Singleton
+    @Binds
+    fun bindHandledFilesCommunication(obj: HandledFilesCommunication.Base): HandledFilesCommunication
+
+    @Singleton
+    @Binds
+    fun bindPermissionStateCommunication(obj: PermissionStateCommunication.Base): PermissionStateCommunication
+
+    @Singleton
+    @Binds
+    fun bindHandledFilesStateCommunication(obj: HandledFilesStateCommunication.Base): HandledFilesStateCommunication
+
+
 }

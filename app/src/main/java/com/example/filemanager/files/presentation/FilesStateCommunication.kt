@@ -10,3 +10,5 @@ interface FilesStateCommunication: Communication.Mutable<FilesState> {
 
     class Base @Inject constructor(): FilesStateCommunication, Communication.UiUpdate<FilesState>(FilesState.Empty)
 }
+
+

@@ -16,6 +16,7 @@ interface FileExtensionHandler {
             private const val TXT = "txt"
             private const val APK = "apk"
             private const val JPG = "jpg"
+            private const val JPEG = "jpeg"
             private const val JPG_CAPS = "JPG"
             private const val MP3 = "mp3"
             private const val PDF = "pdf"
@@ -29,6 +30,7 @@ interface FileExtensionHandler {
                  APK-> R.drawable.apk
                  JPG-> R.drawable.jpg
                  JPG_CAPS->R.drawable.jpg
+                 JPEG->R.drawable.jpg
                  MP3-> R.drawable.mp3
                  PDF-> R.drawable.pdf
                  PNG-> R.drawable.png

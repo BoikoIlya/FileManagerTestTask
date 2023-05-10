@@ -1,5 +1,6 @@
 package com.example.filemanager.files.domain
 
+import com.example.filemanager.core.OrderOption
 import com.example.filemanager.files.data.FilesRepository
 import com.example.filemanager.files.presentation.FileUi
 import java.io.File
@@ -12,6 +13,8 @@ interface FilesInteractor {
 
     suspend fun fetchData(): List<FileUi>
 
+    suspend fun sortData(orderOption: OrderOption): List<FileUi>
+
     fun savePath(path: String)
 
 
@@ -21,6 +24,8 @@ interface FilesInteractor {
     ): FilesInteractor{
 
         override suspend fun fetchData(): List<FileUi> = filesRepository.fetchData().map { it.map(mapper) }
+        override suspend fun sortData(orderOption: OrderOption): List<FileUi>
+            = filesRepository.sortedFilesList(orderOption).map { it.map(mapper) }
 
         override fun savePath(path: String) = filesRepository.savePath(path)
 

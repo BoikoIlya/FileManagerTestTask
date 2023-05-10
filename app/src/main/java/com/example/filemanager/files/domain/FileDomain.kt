@@ -56,4 +56,20 @@ data class FileDomain(
 
     }
 
+    class CompareByTimeMapper : Mapper<Comparator<FileDomain>>{
+        override fun map(
+            name: String,
+            extension: String,
+            dateOfCreation: Long,
+            size: Long,
+            path: String
+        ): Comparator<FileDomain> = Comparator { first, second ->
+            when {
+                first.dateOfCreation > second.dateOfCreation -> 1
+                first.dateOfCreation < second.dateOfCreation -> -1
+                else -> 0
+            }
+        }
+    }
+
 }

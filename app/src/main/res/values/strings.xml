@@ -5,4 +5,16 @@
     <string name="nothing_found">Nothing Found</string>
     <string name="no_changed_files">No changed files</string>
     <string name="cant_share_folder">You can`t share folder</string>
+    <string name="sort_by_extension_desc">Sort by extension desc</string>
+    <string name="sort_by_extension_asc">Sort by extension asc</string>
+    <string name="sort_by_size_desc">Sort by size desc</string>
+    <string name="sort_by_size_asc">Sort by size asc</string>
+    <string name="sort_by_time_desc">Sort by time desc</string>
+    <string name="sort_by_time_asc">Sort by time asc</string>
+    <string name="sort_by_name_desc">Sort by name desc</string>
+    <string name="sort_by_name_asc">Sort by name asc</string>
+    <string name="files_which_changed_since_last_session">Files which changed since last session:</string>
+    <string name="fetching_device_files">Fetching device files…</string>
+    <string name="find_modifed_file">Finding modified files since \nlast session. Analyzed:</string>
+    <string name="all_files_perm_message">Please give permission\nto manage all files</string>
 </resources>

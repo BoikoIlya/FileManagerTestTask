@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -15,6 +16,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.filemanager.R
 import com.example.filemanager.core.ClickListener
 import com.example.filemanager.core.LongClickListener
+import com.example.filemanager.core.OrderOption
 import com.example.filemanager.databinding.FragmentFilesBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -28,8 +30,6 @@ class FilesFragment: Fragment(R.layout.fragment_files){
     private val viewModel: FileViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        Log.d("tag", "onViewCreated: FRAGMET STACK  ${findNavController().backQueue.size} ")
 
         binding.filesRcv.layoutManager = LinearLayoutManager(requireContext())
 
@@ -45,9 +45,40 @@ class FilesFragment: Fragment(R.layout.fragment_files){
 
         binding.filesRcv.adapter = adapter
 
+        binding.sortMenuBtn.setOnClickListener {
+            val popup = PopupMenu(requireContext(), it,)
+            popup.menuInflater.inflate(R.menu.sorting_menu, popup.menu)
+            popup.show()
+            popup.setOnMenuItemClickListener { menuItem ->
+                viewModel.sortBy(
+                when (menuItem.itemId) {
+                    R.id.sort_name_asc -> OrderOption.ByNameASC
+                    R.id.sort_name_desc -> OrderOption.ByNameDESC
+                    R.id.sort_extension_asc-> OrderOption.ByExtensionASC
+                    R.id.sort_extension_desc-> OrderOption.ByExtensionDESC
+                    R.id.sort_size_asc-> OrderOption.BySizeASC
+                    R.id.sort_size_desc-> OrderOption.BySizeDESC
+                    R.id.sort_time_asc-> OrderOption.ByTimeASC
+                    R.id.sort_time_desc-> OrderOption.ByTimeDESC
+                    else -> OrderOption.ByNameASC
+                    }
+                )
+                return@setOnMenuItemClickListener true
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.collectPermissionStateCommunication(this@FilesFragment){
+                it.apply(viewModel, getString(R.string.all_files_perm_message))
+
+            }
+        }
+
+
         lifecycleScope.launch {
             viewModel.collectFiles(this@FilesFragment){
                 adapter.addItems(it)
+                binding.filesRcv.scrollToPosition(0)
             }
         }
 
