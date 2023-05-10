@@ -52,7 +52,7 @@ class SaveFilesHashWorker @AssistedInject constructor(
         and compare with old hash from this file in database. If there is no such file in DB,
         it will be pushed to 'updateFiles' list and then insert to DB. This operation may take
         time, depending on amount of files on your device. In my case it took 2-3 min with 20K
-        files with parallel handling with coroutines using await.
+        files with parallel handling with coroutines using async.
      */
 
     override suspend fun doWork(): Result {
