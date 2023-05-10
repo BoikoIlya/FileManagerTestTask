@@ -107,7 +107,7 @@ class SaveFilesHashWorker @AssistedInject constructor(
                                 }
                             }
 
-                            if (iterationCounter % 100 == 0) {
+                            if (iterationCounter % 1000 == 0) {
                                 synchronized(handledFilesStateCommunication) {
                                     handledFilesStateCommunication.map(FilesState.FilesHandling(
                                         managerResource.getString(R.string.find_modifed_file) +
