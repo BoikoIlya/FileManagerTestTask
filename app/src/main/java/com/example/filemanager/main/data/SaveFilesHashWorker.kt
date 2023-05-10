@@ -45,6 +45,11 @@ class SaveFilesHashWorker @AssistedInject constructor(
 ): CoroutineWorker(context, workerParameters) {
 
 
+    /*
+        Here we are fetching allFiles from device storage. Read every file, generate md5 hash,
+        and compare with old hash from this file in database. If there is no such file in DB,
+        it will be pushed to 'updateFiles' list and then insert to DB.
+     */
 
     override suspend fun doWork(): Result {
                 handledFilesStateCommunication.map(FilesState.FilesHandling(
